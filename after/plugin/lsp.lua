@@ -20,13 +20,13 @@ local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-	ensure_installed = {'clangd', 'ltex'},
-	handlers = {
-		function(server_name)
-			require('lspconfig')[server_name].setup({
+    ensure_installed = {'clangd', 'ltex'},
+    handlers = {
+        function(server_name)
+            require('lspconfig')[server_name].setup({
                 capabilities = lsp_capabilities,
             })
-		end,
+        end,
         lua_ls = function()
             require('lspconfig').lua_ls.setup({
                 capabilities = lsp_capabilities;
@@ -47,7 +47,7 @@ require('mason-lspconfig').setup({
                 }
             })
         end,
-	}
+    }
 })
 
 local cmp = require('cmp')
@@ -60,15 +60,20 @@ cmp.setup({
     }, {
         {name = 'buffer'},
     }),
-	window = {
-		completion = cmp.config.window.bordered(),
-		documentation = cmp.config.window.bordered(),
-	},
-	mapping = cmp.mapping.preset.insert({
-	['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-	['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-	['<C-y>'] = cmp.mapping.confirm({ select = true }),
-	['<C-Space>'] = cmp.mapping.complete(),
+    window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+    },
+    mapping = cmp.mapping.preset.insert({
+        ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+        ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+        ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ["<Tab>"] = function()
+            if require("copilot.suggestion").is_visible() then
+                require("copilot.suggestion").accept()
+            end
+        end
     }),
     snippet = {
         expand = function(args)
@@ -76,3 +81,6 @@ cmp.setup({
         end,
     },
 })
+
+
+
